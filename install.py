@@ -35,16 +35,6 @@ def download_models():
     hed_v11.ControlNetHED_Apache2()
     pidinet_v11.PidiNetDetector()
 
-command = [sys.executable]
-if "python_embeded" in sys.executable: command += ['-s']
-command += ['-m','pip', 'install', '-r' , f'{EXT_PATH}/requirements.txt', 
-    '--extra-index-url', 'https://download.pytorch.org/whl/cu118', '--no-warn-script-location']
-print("Installing requirements...")
-sleep(2)
-proc = subprocess.Popen(command, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
-for line in iter(proc.stdout.readline, ''):
-    print(line, end='')
-proc.wait()
 
 if args.no_download_ckpts: exit()
 print("Download models...")
