@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--no_download_ckpts', action="store_true", help="Don't download any model")
 parser.add_argument('--cpu', action="store_true", help="To use the CPU for everything (slow).")
 
-args = parser.parse_args(args)
+args = parser.parse_args()
 
 def add_global_shortcut_module(module_name, module_path):
     #Naming things is hard
