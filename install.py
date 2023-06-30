@@ -11,6 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(EXT_PATH, "../../")))
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--no_download_ckpts', action="store_true", help="Don't download any model")
+parser.add_argument('--cpu', action="store_true", help="To use the CPU for everything (slow).")
 
 args = parser.parse_args()
 
