@@ -19,8 +19,6 @@ class ZoeDetector:
         if not os.path.exists(modelpath):
             load_file_from_url(remote_model_path, model_dir=annotator_ckpts_path)
         conf = get_config("zoedepth", "infer")
-        model = ZoeDepth.build_from_config(conf)
-        model.load_state_dict(torch.load(modelpath)['model'])
         
         torch_device = model_management.get_torch_device()
         device = torch_device.type
@@ -28,6 +26,8 @@ class ZoeDetector:
         if torch_device.index:
             device = device + ":" + str(torch_device.index)
 
+        model = ZoeDepth.build_from_config(conf)
+        model.load_state_dict(torch.load(modelpath)['model'], map_location=torch_device)
         if torch_device.type == "cuda":
             model = model.cuda()
         
