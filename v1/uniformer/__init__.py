@@ -20,7 +20,13 @@ class UniformerDetector:
             from custom_nodes.comfy_controlnet_preprocessors.util import load_file_from_url
             load_file_from_url(checkpoint_file, model_dir=annotator_ckpts_path)
         config_file = os.path.join(os.path.dirname(__file__), "exp", "upernet_global_small", "config.py")
-        self.model = init_segmentor(config_file, modelpath).to(model_management.get_torch_device())
+        torch_device = model_management.get_torch_device()
+        device = torch_device.device
+
+        if torch_device.index:
+            device = device + ":" + str(torch_device.index)
+        
+        self.model = init_segmentor(config_file, modelpath, device).to(model_management.get_torch_device())
 
     def __call__(self, img):
         result = inference_segmentor(self.model, img)
