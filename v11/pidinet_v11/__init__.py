@@ -26,7 +26,7 @@ class PidiNetDetector:
         self.netNetwork = pidinet()
         self.netNetwork.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(modelpath, map_location=torch_device)['state_dict'].items()})
 
-        if device == "cuda':
+        if device == "cuda":
             self.netNetwork = self.netNetwork.cuda()
         
         self.netNetwork.eval()
