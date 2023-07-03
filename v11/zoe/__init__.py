@@ -27,7 +27,7 @@ class ZoeDetector:
             device = device + ":" + str(torch_device.index)
 
         model = ZoeDepth.build_from_config(conf)
-        model.load_state_dict(torch.load(modelpath)['model'], map_location=torch_device)
+        model.load_state_dict(torch.load(modelpath, map_location=torch_device)['model'], map_location=torch_device)
         if torch_device.type == "cuda":
             model = model.cuda()
         
