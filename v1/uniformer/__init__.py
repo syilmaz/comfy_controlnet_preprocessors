@@ -21,7 +21,7 @@ class UniformerDetector:
             load_file_from_url(checkpoint_file, model_dir=annotator_ckpts_path)
         config_file = os.path.join(os.path.dirname(__file__), "exp", "upernet_global_small", "config.py")
         torch_device = model_management.get_torch_device()
-        device = torch_device.device
+        device = torch_device.type
 
         if torch_device.index:
             device = device + ":" + str(torch_device.index)
