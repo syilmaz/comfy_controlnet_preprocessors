@@ -10,6 +10,7 @@ from einops import rearrange
 from .zoedepth.models.zoedepth.zoedepth_v1 import ZoeDepth
 from .zoedepth.utils.config import get_config
 from custom_nodes.comfy_controlnet_preprocessors.util import annotator_ckpts_path, load_file_from_url
+import comfy.model_management as model_management
 
 class ZoeDetector:
     def __init__(self):
@@ -20,8 +21,17 @@ class ZoeDetector:
         conf = get_config("zoedepth", "infer")
         model = ZoeDepth.build_from_config(conf)
         model.load_state_dict(torch.load(modelpath)['model'])
-        model = model.cuda()
-        model.device = 'cuda'
+        
+        torch_device = model_management.get_torch_device()
+        device = torch_device.type
+        
+        if torch_device.index:
+            device = device + ":" + str(torch_device.index)
+
+        if torch_device.type == "cuda":
+            model = model.cuda()
+        
+        model.device = device
         model.eval()
         self.model = model
 
