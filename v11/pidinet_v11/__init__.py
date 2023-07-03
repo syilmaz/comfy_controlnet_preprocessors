@@ -7,7 +7,7 @@ import numpy as np
 from einops import rearrange
 from .model import pidinet
 from custom_nodes.comfy_controlnet_preprocessors.util import annotator_ckpts_path, safe_step, load_file_from_url
-
+import comfy.model_management as model_management
 
 class PidiNetDetector:
     def __init__(self):
@@ -15,9 +15,20 @@ class PidiNetDetector:
         modelpath = os.path.join(annotator_ckpts_path, "table5_pidinet.pth")
         if not os.path.exists(modelpath):
             load_file_from_url(remote_model_path, model_dir=annotator_ckpts_path)
+
+        
+        torch_device = model_management.get_torch_device()
+        device = torch_device.type
+        
+        if torch_device.index:
+            device = device + ":" + str(torch_device.index)
+
         self.netNetwork = pidinet()
-        self.netNetwork.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(modelpath)['state_dict'].items()})
-        self.netNetwork = self.netNetwork.cuda()
+        self.netNetwork.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(modelpath, map_location=torch_device)['state_dict'].items()})
+
+        if device === 'cuda':
+            self.netNetwork = self.netNetwork.cuda()
+        
         self.netNetwork.eval()
 
     def __call__(self, input_image, safe=False):
