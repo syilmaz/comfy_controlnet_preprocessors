@@ -40,6 +40,8 @@ class OneformerDetector:
     def __call__(self, img):
         if self.model is None:
             self.load_model()
-            
+
+        print("__cal__")
         self.model.model.to(self.device)
+        print("semantic_run pre")
         return semantic_run(img, self.model, self.metadata)
