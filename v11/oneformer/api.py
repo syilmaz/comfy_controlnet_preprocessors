@@ -33,7 +33,11 @@ def make_detectron2_model(config_path, ckpt_path):
 
 
 def semantic_run(img, predictor, metadata):
+    print("semantic_run 1")
     predictions = predictor(img[:, :, ::-1], "semantic")  # Predictor of OneFormer must use BGR image !!!
+    print("semantic_run 2")
     visualizer_map = Visualizer(img, is_img=False, metadata=metadata, instance_mode=ColorMode.IMAGE)
+    print("semantic_run 3")
     out_map = visualizer_map.draw_sem_seg(predictions["sem_seg"].argmax(dim=0).cpu(), alpha=1, is_text=False).get_image()
+    print("semantic_run 4")
     return out_map
