@@ -20,23 +20,15 @@ from custom_nodes.comfy_controlnet_preprocessors.v11.oneformer.oneformer.demo.vi
 
 def make_detectron2_model(config_path, ckpt_path):
     cfg = get_cfg()
-    print("make_detectron2_model 1")
     add_deeplab_config(cfg)
-    print("make_detectron2_model 2")
     add_common_config(cfg)
-    print("make_detectron2_model 3")
     add_swin_config(cfg)
-    print("make_detectron2_model 4")
     add_oneformer_config(cfg)
-    print("make_detectron2_model 5")
     add_dinat_config(cfg)
-    print("make_detectron2_model 6")
     cfg.merge_from_file(config_path)
     cfg.MODEL.WEIGHTS = ckpt_path
     cfg.freeze()
-    print("make_detectron2_model 7")
     metadata = MetadataCatalog.get(cfg.DATASETS.TEST_PANOPTIC[0] if len(cfg.DATASETS.TEST_PANOPTIC) else "__unused")
-    print("make_detectron2_model 8")
     return DefaultPredictor(cfg), metadata
 
 
