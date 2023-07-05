@@ -17,11 +17,15 @@ def img_tensor_to_np(img_tensor):
     #Thanks ChatGPT
 
 def common_annotator_call(annotator_callback, tensor_image, *args):
+    print("img_tensor_to_np 0")
     tensor_image_list = img_tensor_to_np(tensor_image)
+    print("img_tensor_to_np 1")
     out_list = []
     out_info_list = []
     for tensor_image in tensor_image_list:
+        print("common_annotator_call annotator_callback 1")
         call_result = annotator_callback(resize_image(HWC3(tensor_image)), *args)
+        print("common_annotator_call annotator_callback 2")
         H, W, C = tensor_image.shape
         if type(annotator_callback) is openpose_v1.OpenposeDetector:
             out_list.append(cv2.resize(HWC3(call_result[0]), (W, H), interpolation=cv2.INTER_AREA))
@@ -36,4 +40,5 @@ def common_annotator_call(annotator_callback, tensor_image, *args):
     elif type(annotator_callback) is midas.MidasDetector:
         return (out_list, out_info_list)
     else:
+        print("common_annotator_call annotator_callback 3", out_list)
         return out_list
