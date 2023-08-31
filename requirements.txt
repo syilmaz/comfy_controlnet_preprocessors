@@ -1,5 +1,5 @@
-opencv-contrib-python==4.8.0
-opencv-python==4.8.0
+opencv-contrib-python==4.8.0.76
+opencv-python==4.8.0.76
 timm==0.6.7
 #torchvision
 scipy
